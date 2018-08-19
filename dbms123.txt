@@ -1,0 +1,104 @@
+create table board
+(
+    board_name varchar(20) NOT NULL,
+    board_address varchar(40) NOT NULL,
+    PRIMARY KEY (board_name)
+)
+
+
+CREATE TABLE branches 
+( 
+branch_id int NOT NULL AUTO_INCREMENT, 
+branch_name varchar(20) NOT NULL, 
+board_name varchar(20) NOT NULL, 
+PRIMARY KEY(branch_id), 
+FOREIGN KEY (board_name) REFERENCES board(board_name) 
+)
+
+
+create TABLE employee
+(
+    employee_id int NOT NULL AUTO_INCREMENT,
+    employee_name varchar(20) NOT NULL,
+    branch_id int NOT NULL,
+    board_name varchar(20) NOT NULL,
+    PRIMARY KEY (employee_id),
+    FOREIGN KEY(branch_id) REFERENCES branches(branch_id),
+    FOREIGN KEY(board_name) REFERENCES board(board_name)
+)
+
+create table consumer
+(
+    consumer_id int NOT NULL AUTO_INCREMENT,
+    consumer_name varchar(20) NOT NULL,
+    consumer_address varchar(40),
+    dob date,
+    gender varchar(10),
+    PRIMARY KEY(consumer_id)
+
+)
+
+create table region 
+(
+   region_id int NOT NULL AUTO_INCREMENT,
+   region_name varchar(20) NOT NULL,
+   rate float NOT NULL,
+   PRIMARY KEY(region_id)
+)
+
+
+create table record
+(
+   consumer_id int NOT NULL,
+   employee_id int NOT NULL,
+   consumer_usage float,
+   bill float,
+   status varchar(10),
+   FOREIGN KEY(consumer_id) REFERENCES consumer(consumer_id),
+   FOREIGN KEY(employee_id) REFERENCES employee(employee_id)
+)
+
+
+create table consumption
+(
+   region_id int NOT NULL ,
+   consumer_id int NOT NULL,
+   FOREIGN KEY(consumer_id) REFERENCES consumer(consumer_id),
+   FOREIGN KEY(region_id) REFERENCES region(region_id)
+)
+
+
+create table location
+(
+   branch_id int NOT NULL,
+   board_name varchar(20) NOT NULL,
+   region_id int NOT NULL,
+   FOREIGN KEY(branch_id) REFERENCES branches(branch_id),
+   FOREIGN KEY(region_id) REFERENCES region(region_id),
+   FOREIGN KEY(board_name) REFERENCES board(board_name)
+)
+
+create table consumerlogin
+(
+   username varchar(20) NOT NULL,
+   password varchar(20) NOT NULL,
+   consumer_id int NOT NULL,
+   PRIMARY KEY(username),
+   FOREIGN KEY(consumer_id) REFERENCES consumer(consumer_id)
+)
+
+create table employeelogin
+(
+   eusername varchar(20) NOT NULL,
+   epassword varchar(20) NOT NULL,
+   employee_id int NOT NULL,
+   PRIMARY KEY(eusername),
+   FOREIGN KEY(employee_id) REFERENCES employee(employee_id)
+)
+
+
+ALTER TABLE record
+MODIFY COLUMN month varchar(10);
+
+
+
